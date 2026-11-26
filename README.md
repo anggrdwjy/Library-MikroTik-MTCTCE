@@ -1,14 +1,14 @@
 # MTCTCE — Implementation and Operation Guide
 
 ## Daftar Isi
-- [Modul 1 - Packet Flow Diagram](https://github.com/anggrdwjy/Library-MikroTik-MTCTCE/blob/main/README.md#modul-1--packet-flow-diagram)
-- [Modul 2 - Firewall Filter, NAT, Mangle](https://github.com/anggrdwjy/Library-MikroTik-MTCTCE/blob/main/README.md#modul-2--firewall-filter-nat-mangle)
-- [Modul 3 - Quality of Service (QoS)](https://github.com/anggrdwjy/Library-MikroTik-MTCTCE/blob/main/README.md#modul-3--quality-of-service-qos)
-- [Modul 4 - DNS Client, Cache](https://github.com/anggrdwjy/Library-MikroTik-MTCTCE/blob/main/README.md#modul-4--dns-client-cache)
-- [Modul 5 - DHCP Client, Relay, Server](https://github.com/anggrdwjy/Library-MikroTik-MTCTCE/blob/main/README.md#modul-5--dhcp-client-relay-server)
-- [Modul 6 - Web Proxy](https://github.com/anggrdwjy/Library-MikroTik-MTCTCE/blob/main/README.md#modul-6--web-proxy)
+- [Modul 1. Packet Flow Diagram]( #modul-1-packet-flow-diagram)
+- [Modul 2. Firewall Filter, NAT, Mangle]( #modul-2-firewall-filter-nat-mangle)
+- [Modul 3. Quality of Service (QoS)]( #modul-3-quality-of-service-qos)
+- [Modul 4. DNS Client, Cache]( #modul-4-dns-client-cache)
+- [Modul 5. DHCP Client, Relay, Server]( #modul-5-dhcp-client-relay-server)
+- [Modul 6. Web Proxy]( #modul-6-web-proxy)
 
-## Modul 1 — Packet Flow Diagram
+## Modul 1. Packet Flow Diagram
 
 ### 1.1 Tujuan
 - Mampu menjawab pertanyaan berikut: Melalui chain mana paket tersebut melewati router? Pada tahap mana paket dikenai NAT? Pada tahap mana paket dikenai Mangle? Mengapa aturan yang dibuat tidak berfungsi?
@@ -122,7 +122,7 @@ Administrator telah membuat dan seterusnya-NAT port 80 menuju server 192.168.10.
 
 > **Catatan Migrasi Modul 1:** Tidak terdapat perubahan perintah yang bersifat memutus pada Packet Flow antara v6 dan v7. Konfigurasi v6 dapat dipindahkan ke v7 dengan penyesuaian minimal, terutama pada Connection Tracking dan Bridge Settings. Disarankan untuk memverifikasi kembali bahwa trafik Bridge tidak melewati IP Firewall apabila opsi tersebut tidak diaktifkan.
 
-## Modul 2 — Firewall Filter, NAT, Mangle
+## Modul 2. Firewall Filter, NAT, Mangle
 
 ### 2.1 Tujuan
 - Mengamankan router dan jaringan dengan Filter yang berlapis.
@@ -274,7 +274,7 @@ add chain=prerouting connection-mark=conn-web action=mark-packet new-packet-mark
 
 > **Catatan Migrasi Modul 2:** Perintah Filter dan NAT pada v6 dapat digunakan kembali pada v7 tanpa perubahan. Perbedaan utama terdapat pada Mark Routing. Apabila konfigurasi v6 menggunakan `routing-mark`, pada saat migrasi ke v7, disarankan untuk mengubahnya menjadi `routing-table` dan membuat entri pada `/routing table` agar routing tetap berfungsi dan mudah dikelola.
 
-## Modul 3 — Quality of Service (QoS)
+## Modul 3. Quality of Service (QoS)
 
 ### 3.1 Tujuan
 - Menjamin aplikasi penting (Zoom, VoIP, aplikasi kantor) tetap berjalan dengan lancar meskipun jaringan sedang sibuk.
@@ -397,7 +397,7 @@ add name=Server target=192.168.10.10/32 max-limit=20M/20M priority=1/1 comment="
 
 > **Catatan Migrasi Modul 3:** Konfigurasi Queue Tree dan Simple Queue dari v6 dapat digunakan pada v7 tanpa perubahan. Apabila jaringan mengalami keluhan latensi (Zoom terputus, permainan mengalami jeda), disarankan untuk menguji Queue Type CAKE atau FQ-CoDel pada v7 sebagai pengganti FIFO / SFQ, kemudian mengukur kembali latensi dan jitter sebelum diterapkan secara permanen.
 
-## Modul 4 — DNS Client, Cache
+## Modul 4. DNS Client, Cache
 
 ### 4.1 Tujuan
 - Router dapat melakukan resolusi nama domain dengan cepat dan andal.
@@ -484,7 +484,7 @@ add name=ads.contoh-iklan.com address=127.0.0.1 comment="Blokir Iklan — arahka
 
 > **Catatan Migrasi Modul 4:** Konfigurasi DNS dasar v6 dapat dipindahkan ke v7 tanpa perubahan. Apabila DoH diaktifkan, pastikan sertifikat terverifikasi dan Firewall mengizinkan trafik TCP 443 ke server DoH. Apabila AdList diaktifkan, pantau penggunaan memori, karena daftar domain yang besar memerlukan RAM yang cukup.
 
-## Modul 5 — DHCP Client, Relay, Server
+## Modul 5. DHCP Client, Relay, Server
 
 ### 5.1 Tujuan
 - Memahami alur DHCP: Discover - Offer - Request - Ack.
@@ -600,7 +600,7 @@ add address=192.168.10.50 mac-address=AA:BB:CC:DD:EE:02 server=dhcp-LAN comment=
 
 > **Catatan Migrasi Modul 5:** Konfigurasi DHCP IPv4 v6 dapat dipindahkan ke v7 tanpa perubahan mendasar. Apabila menggunakan Option yang kompleks atau DHCPv6, disarankan untuk menguji Option Sets pada v7 di laboratorium terlebih dahulu, karena sintaks Option Sets berbeda dari Option tunggal pada v6. Pastikan tidak terdapat dua DHCP Server yang aktif pada satu segmen yang sama setelah migrasi.
 
-## Modul 6 — Web Proxy
+## Modul 6. Web Proxy
 
 ### 6.1 Tujuan
 - Mengontrol siapa yang diizinkan membuka apa, melalui Access List dan Direct Access List.
